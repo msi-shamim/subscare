@@ -1,11 +1,35 @@
 # Miscellaneous
 *.class
-*.lock
 *.log
 *.pyc
 *.swp
 .buildlog/
 .history
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Mermaid diagrams
+mermaid/
+
+# Environment and secrets
+.env
+.env.*
+*.env
+secrets/
+credentials/
+*.pem
+*.p12
+
+# API keys and config (if any)
+google-services.json
+GoogleService-Info.plist
 
 
 
