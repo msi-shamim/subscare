@@ -1,0 +1,41 @@
+%% ============================================================
+%% SECTION 7: TRANSACTION CREATION - ALL METHODS COMPARISON
+%% ============================================================
+
+flowchart LR
+    subgraph ENTRY_METHODS["THREE ENTRY METHODS"]
+
+        subgraph MANUAL_ENTRY["MANUAL"]
+            M1[User Input] --> M2[Form Fields]
+            M2 --> M3[Validation]
+            M3 --> M4[entryMethod: manual]
+        end
+
+        subgraph OCR_ENTRY["OCR"]
+            O1[Scan Bill] --> O2[ML Kit Extract]
+            O2 --> O3[Parse & Review]
+            O3 --> O4[entryMethod: ocr]
+            O4 --> O5[Link: ocrScanId]
+        end
+
+        subgraph AI_ENTRY["AI"]
+            A1[Natural Language] --> A2[Gemini Parse]
+            A2 --> A3[Confirm & Edit]
+            A3 --> A4[entryMethod: ai]
+            A4 --> A5[Link: aiPromptId]
+        end
+
+    end
+
+    M4 --> SAVE[(Save Transaction)]
+    O5 --> SAVE
+    A5 --> SAVE
+
+    SAVE --> LEDGER[Dashboard Ledger]
+    SAVE --> ANALYTICS[Analytics Update]
+    SAVE --> NOTIFY[Trigger Notifications]
+
+    style MANUAL_ENTRY fill:#E8F5E9,stroke:#2E7D32
+    style OCR_ENTRY fill:#FFF3E0,stroke:#E65100
+    style AI_ENTRY fill:#EDE7F6,stroke:#512DA8
+    style SAVE fill:#BBDEFB,stroke:#1976D2

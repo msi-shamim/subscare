@@ -1,0 +1,151 @@
+%% ============================================================
+%% SubsCare - Model Structure & Data Flow Diagrams
+%% ============================================================
+
+%% ============================================================
+%% SECTION 1: HIVE DATABASE MODELS (Entity Relationship Diagram)
+%% ============================================================
+
+erDiagram
+    %% ==================== CORE MODELS ====================
+
+    UserProfile ||--o{ Transaction : "owns"
+    UserProfile ||--o{ Subscription : "owns"
+    UserProfile ||--o{ Category : "customizes"
+    UserProfile ||--o{ Reminder : "configures"
+    UserProfile ||--o{ AIPromptHistory : "generates"
+
+    Category ||--o{ Transaction : "categorizes"
+    Category ||--o{ Subscription : "categorizes"
+
+    Subscription ||--o{ Transaction : "generates"
+    Subscription ||--o{ Reminder : "triggers"
+
+    Transaction ||--o{ Attachment : "contains"
+
+    OCRScan ||--|| Transaction : "creates"
+    OCRScan ||--o{ Attachment : "stores"
+
+    AIPromptHistory ||--|| Transaction : "creates"
+
+    %% ==================== MODEL DEFINITIONS ====================
+
+    UserProfile {
+        string id PK "UUID"
+        string name "Display name"
+        string email "Google email"
+        string avatarUrl "Profile picture"
+        string currency "BDT default"
+        string theme "light/dark/system"
+        bool isOnboarded "First time setup"
+        datetime createdAt "Account creation"
+        datetime lastBackup "Last backup time"
+    }
+
+    Category {
+        string id PK "UUID"
+        string name "Category name"
+        string icon "Icon identifier"
+        string color "Hex color code"
+        string type "debit/credit/both"
+        bool isDefault "System default"
+        bool isActive "Soft delete"
+        int sortOrder "Display order"
+    }
+
+    Transaction {
+        string id PK "UUID"
+        string title "Transaction title"
+        double amount "Transaction amount"
+        string type "debit/credit"
+        string categoryId FK "Category reference"
+        datetime dateTime "Transaction date"
+        string notes "Optional notes"
+        string entryMethod "manual/ocr/ai"
+        bool isRecurring "From subscription"
+        string subscriptionId FK "Subscription reference"
+        string ocrScanId FK "OCR scan reference"
+        string aiPromptId FK "AI prompt reference"
+        datetime createdAt "Record creation"
+        datetime updatedAt "Last modification"
+    }
+
+    Subscription {
+        string id PK "UUID"
+        string name "Subscription name"
+        string description "Details"
+        double amount "Billing amount"
+        string categoryId FK "Category reference"
+        string frequency "daily/weekly/monthly/yearly/custom"
+        int customDays "Custom frequency days"
+        datetime startDate "Subscription start"
+        datetime nextDueDate "Next billing date"
+        bool isAutoPay "Auto-debit enabled"
+        bool isActive "Currently active"
+        bool isPaused "Temporarily paused"
+        string reminderType "none/1day/3days/1week"
+        string notes "Optional notes"
+        string logoUrl "Service logo"
+        datetime createdAt "Record creation"
+    }
+
+    Reminder {
+        string id PK "UUID"
+        string subscriptionId FK "Subscription reference"
+        string title "Notification title"
+        string body "Notification body"
+        datetime scheduledAt "When to notify"
+        bool isTriggered "Already shown"
+        bool isDismissed "User dismissed"
+        string action "paid/snoozed/none"
+        datetime createdAt "Record creation"
+    }
+
+    Attachment {
+        string id PK "UUID"
+        string transactionId FK "Transaction reference"
+        string ocrScanId FK "OCR scan reference"
+        string filePath "Local file path"
+        string fileName "Original name"
+        string fileType "image/pdf/doc"
+        int fileSize "Size in bytes"
+        datetime createdAt "Upload time"
+    }
+
+    OCRScan {
+        string id PK "UUID"
+        string imagePath "Scanned image path"
+        string extractedText "Raw OCR text"
+        string parsedVendor "Detected vendor"
+        double parsedAmount "Detected amount"
+        datetime parsedDate "Detected date"
+        string status "pending/processed/failed"
+        double confidence "OCR confidence score"
+        datetime createdAt "Scan time"
+    }
+
+    AIPromptHistory {
+        string id PK "UUID"
+        string userPrompt "User input text"
+        string aiResponse "Gemini response"
+        string parsedTitle "Extracted title"
+        double parsedAmount "Extracted amount"
+        string parsedType "Extracted debit/credit"
+        string parsedCategory "Suggested category"
+        datetime parsedDate "Extracted date"
+        bool wasAccepted "User confirmed"
+        bool wasEdited "User modified"
+        datetime createdAt "Prompt time"
+    }
+
+    AppSettings {
+        string id PK "singleton"
+        bool notificationsEnabled "Global notifications"
+        bool soundEnabled "Notification sound"
+        bool vibrationEnabled "Haptic feedback"
+        string defaultCurrency "BDT"
+        string dateFormat "dd/MM/yyyy"
+        bool biometricLock "App lock enabled"
+        string backupFrequency "manual/daily/weekly"
+        datetime lastSyncAt "Last cloud sync"
+    }

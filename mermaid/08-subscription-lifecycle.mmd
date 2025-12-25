@@ -1,0 +1,46 @@
+%% ============================================================
+%% SECTION 8: SUBSCRIPTION LIFECYCLE
+%% ============================================================
+
+flowchart TB
+    subgraph SUB_LIFECYCLE["SUBSCRIPTION LIFECYCLE"]
+        direction TB
+
+        CREATE[Create Subscription] --> ACTIVE[Active State]
+
+        ACTIVE --> DUE{Due Date Reached?}
+
+        DUE -->|No| WAIT[Wait for Due Date]
+        WAIT --> DUE
+
+        DUE -->|Yes| REMIND[Trigger Reminder]
+        REMIND --> NOTIFY[Send Notification]
+
+        NOTIFY --> ACTION{User Action}
+
+        ACTION -->|Mark Paid| PAID[Record Transaction]
+        ACTION -->|Snooze| SNOOZE[Reschedule Reminder]
+        ACTION -->|Ignore| OVERDUE[Mark Overdue]
+
+        PAID --> NEXT[Calculate Next Due Date]
+        SNOOZE --> WAIT
+        OVERDUE --> REMIND
+
+        NEXT --> UPDATE[Update Subscription]
+        UPDATE --> ACTIVE
+
+        %% Side Actions
+        ACTIVE --> PAUSE[Pause Subscription]
+        PAUSE --> PAUSED[Paused State]
+        PAUSED --> RESUME[Resume Subscription]
+        RESUME --> ACTIVE
+
+        ACTIVE --> CANCEL[Cancel Subscription]
+        CANCEL --> INACTIVE[Inactive State]
+    end
+
+    style SUB_LIFECYCLE fill:#E3F2FD,stroke:#1565C0
+    style ACTIVE fill:#C8E6C9,stroke:#388E3C
+    style PAUSED fill:#FFE0B2,stroke:#F57C00
+    style INACTIVE fill:#FFCDD2,stroke:#C62828
+    style PAID fill:#C8E6C9,stroke:#388E3C

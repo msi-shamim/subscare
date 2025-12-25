@@ -1,0 +1,46 @@
+%% ============================================================
+%% SECTION 6: HIVE BOX RELATIONSHIPS
+%% ============================================================
+
+flowchart LR
+    subgraph HIVE_BOXES["HIVE DATABASE STRUCTURE"]
+        direction TB
+
+        subgraph PRIMARY["PRIMARY BOXES"]
+            T[(transactions)]
+            S[(subscriptions)]
+            C[(categories)]
+        end
+
+        subgraph SECONDARY["SECONDARY BOXES"]
+            R[(reminders)]
+            A[(attachments)]
+        end
+
+        subgraph FEATURE_BOXES["FEATURE-SPECIFIC BOXES"]
+            OCR[(ocrScans)]
+            AI[(aiHistory)]
+        end
+
+        subgraph CONFIG["CONFIGURATION BOXES"]
+            U[(userProfile)]
+            SET[(settings)]
+        end
+    end
+
+    %% Relationships
+    S -->|"generates"| T
+    S -->|"triggers"| R
+    C -->|"categorizes"| T
+    C -->|"categorizes"| S
+    OCR -->|"creates"| T
+    AI -->|"creates"| T
+    T -->|"contains"| A
+    OCR -->|"stores"| A
+    U -->|"owns"| T
+    U -->|"owns"| S
+
+    style PRIMARY fill:#C8E6C9,stroke:#388E3C
+    style SECONDARY fill:#FFE0B2,stroke:#F57C00
+    style FEATURE_BOXES fill:#E1BEE7,stroke:#8E24AA
+    style CONFIG fill:#B3E5FC,stroke:#0288D1

@@ -1,0 +1,38 @@
+%% ============================================================
+%% SECTION 9: DATA SYNC & BACKUP FLOW
+%% ============================================================
+
+flowchart TB
+    subgraph BACKUP_FLOW["BACKUP & RESTORE FLOW"]
+        direction TB
+
+        subgraph LOCAL["LOCAL STORAGE"]
+            HIVE[Hive Boxes]
+            FILES[Attachment Files]
+        end
+
+        subgraph BACKUP_OPS["BACKUP OPERATIONS"]
+            EXPORT_JSON[Export to JSON]
+            EXPORT_CSV[Export to CSV]
+            BACKUP_LOCAL[Backup to Device]
+        end
+
+        subgraph RESTORE_OPS["RESTORE OPERATIONS"]
+            IMPORT_JSON[Import from JSON]
+            RESTORE_LOCAL[Restore from Backup]
+        end
+
+        HIVE --> EXPORT_JSON
+        HIVE --> EXPORT_CSV
+        HIVE --> BACKUP_LOCAL
+        FILES --> BACKUP_LOCAL
+
+        IMPORT_JSON --> HIVE
+        RESTORE_LOCAL --> HIVE
+        RESTORE_LOCAL --> FILES
+
+    end
+
+    style LOCAL fill:#BBDEFB,stroke:#1976D2
+    style BACKUP_OPS fill:#C8E6C9,stroke:#388E3C
+    style RESTORE_OPS fill:#FFE0B2,stroke:#F57C00
