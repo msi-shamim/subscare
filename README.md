@@ -2,9 +2,12 @@
 
 > Your Personal Accountant - A subscription & billing management app for tracking expenses, income, and recurring payments.
 
-[![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter)](https://flutter.dev)
-[![Dart](https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart)](https://dart.dev)
+[![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](https://github.com/msi-shamim/subscare/releases)
+[![Flutter](https://img.shields.io/badge/Flutter-3.24-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
+[![Dart](https://img.shields.io/badge/Dart-3.5-0175C2?logo=dart&logoColor=white)](https://dart.dev)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS-lightgrey?logo=android&logoColor=white)](https://flutter.dev)
+[![GetX](https://img.shields.io/badge/State-GetX-purple.svg)](https://pub.dev/packages/get)
 
 ## Overview
 
